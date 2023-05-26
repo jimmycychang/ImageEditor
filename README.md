@@ -1,5 +1,5 @@
 # ImageEditor
-![image](https://github.com/jimmycychang/ImageEditor/assets/103914673/c8224245-7f77-430b-aaa9-1239b97aa78f)
-![image](https://github.com/jimmycychang/ImageEditor/assets/103914673/e340160b-fd4d-4ae8-bccd-1ceda77325e9)
-![image](https://github.com/jimmycychang/ImageEditor/assets/103914673/8391ea00-1ec3-4ff5-9557-98ae6120d4b8)
-![image](https://github.com/jimmycychang/ImageEditor/assets/103914673/7bb84304-b7f7-49ba-bd32-40db5efeec68)
+
+![image](https://github.com/jimmycychang/ImageEditor/assets/103914673/a8b57a9b-5a00-4847-a5ba-a17463684c5c)
+![image](https://github.com/jimmycychang/ImageEditor/assets/103914673/6e931edd-e8d7-4978-aeeb-fd66d2e47e1c)
+![image](https://github.com/jimmycychang/ImageEditor/assets/103914673/b4312dff-e4ae-45ae-8439-a3f5f1d948e3)
