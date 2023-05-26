@@ -45,17 +45,6 @@ class image_functions():
             
     def select_img(self):
         global path
-        global btn_show
-        global btn_gray
-        global btn_resize
-        global btn_showinfo
-        global btn_neg
-        global btn_red
-        global btn_green
-        global btn_blue
-        global btn_crop
-        global btn_blur
-        global btn_smooth
         path = filedialog.askopenfilename(initialdir="images", title="select a file", 
                                         filetypes=(("jpg files", "*.jpg"), 
                                                     ("png files", "*.png"), 
@@ -68,7 +57,7 @@ class image_functions():
         Button(self.root, text="Show Image Info", command=lambda:self.showinfo(path)).grid(
             row=1, column=1, padx=2, pady=2, sticky=W)
         Button(self.root, text="Resize Image", command=lambda:self.resize(path)).grid(
-            row=1, column=2, padx=2, pady=2, sticky=W)
+            row=1, column=2, padx=2, pady=2, sticky=W, ipadx=1)
         Button(self.root, text="Crop Image", command=lambda:self.crop(path)).grid(
             row=1, column=3, padx=2, pady=2, sticky=W, ipadx=10)
         
@@ -77,7 +66,7 @@ class image_functions():
         Button(self.root, text="Negative Image", command=lambda:self.negative(path)).grid(
             row=2, column=1, padx=2, pady=2, sticky=W, ipadx=4)
         Button(self.root, text="Blur Image", command=lambda:self.blur(path)).grid(
-            row=2, column=2, padx=2, pady=2, sticky=W, ipadx=8)
+            row=2, column=2, padx=2, pady=2, sticky=W, ipadx=9)
         Button(self.root, text="Smooth Image", command=lambda:self.smooth(path)).grid(
             row=2, column=3, padx=2, pady=2, sticky=W)
         
@@ -86,10 +75,18 @@ class image_functions():
         Button(self.root, text="Green Image", command=lambda:self.green(path)).grid(
             row=3, column=1, padx=2, pady=2, sticky=W, ipadx=14)
         Button(self.root, text="Blue Image", command=lambda:self.blue(path)).grid(
-            row=3, column=2, padx=2, pady=2, sticky=W, ipadx=6)
+            row=3, column=2, padx=2, pady=2, sticky=W, ipadx=7)
         Button(self.root, text="Sketch Image", command=lambda:self.sketch(path)).grid(
             row=3, column=3, padx=2, pady=2, sticky=W, ipadx=4)
-
+        
+        Button(self.root, text="Rotate Image", command=lambda:self.rotate(path)).grid(
+            row=4, column=0, padx=2, pady=2, sticky=W, ipadx=26)
+        Button(self.root, text="Flip Image", command=lambda:self.flip(path)).grid(
+            row=4, column=1, padx=2, pady=2, sticky=W, ipadx=22)
+        Button(self.root, text="Border Image", command=lambda:self.border(path)).grid(
+            row=4, column=2, padx=2, pady=2, sticky=W)
+        Button(self.root, text="Text Image", command=lambda:self.text(path)).grid(
+            row=4, column=3, padx=2, pady=2, sticky=W, ipadx=12)
         return path
 
     def show(self, path):
@@ -183,7 +180,7 @@ class image_functions():
         pencil, img_f = cv2.pencilSketch(img, 100, 0.1, shade_factor=0.1)
         img = self.cv2_to_PIL(img_f)
         self.top_pop("Sketch", img, img_f)
-    
+
     def rotate(self, path):
         img = cv2.imread(path)
         def choose_function(img, value):
