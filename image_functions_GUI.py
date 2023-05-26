@@ -183,3 +183,90 @@ class image_functions():
         pencil, img_f = cv2.pencilSketch(img, 100, 0.1, shade_factor=0.1)
         img = self.cv2_to_PIL(img_f)
         self.top_pop("Sketch", img, img_f)
+    
+    def rotate(self, path):
+        img = cv2.imread(path)
+        def choose_function(img, value):
+            if value == "rotate 90 clockwise":
+                img_f = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+                img = self.cv2_to_PIL(img_f)
+                self.top_pop("Rotate", img, img_f)
+            if value == "rotate 180":
+                img_f = cv2.rotate(img, cv2.ROTATE_180)
+                img = self.cv2_to_PIL(img_f)
+                self.top_pop("Rotate", img, img_f)
+            if value == "rotate 90 counterclockwise":
+                img_f = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                img = self.cv2_to_PIL(img_f)
+                self.top_pop("Rotate", img, img_f)      
+        
+        E = Toplevel()
+        E.title("Function")
+        E.iconbitmap("icon.ico")
+        rotate_func = [("rotate 90 clockwise","rotate 90 clockwise"),
+                        ("rotate 180","rotate 180"),
+                        ("rotate 90 counterclockwise","rotate 90 counterclockwise")]
+        selected = StringVar()
+        selected.set("rotate 90 clockwise")
+        for text, selections in rotate_func:
+            Radiobutton(E, text=text, variable=selected, value=selections).pack(anchor=W)
+        btn = Button(E, text="Enter", command=lambda:choose_function(img, selected.get())).pack()
+
+    def flip(self, path):
+            img = cv2.imread(path)
+            def choose_function(img, value):
+                if value == "Vertical":
+                    img_f = cv2.flip(img, 0)
+                    img = self.cv2_to_PIL(img_f)
+                    self.top_pop("Flip", img, img_f)
+                if value == "Horizontal":
+                    img_f = cv2.flip(img, 2)
+                    img = self.cv2_to_PIL(img_f)
+                    self.top_pop("Flip", img, img_f)
+            
+            E = Toplevel()
+            E.title("Function")
+            E.iconbitmap("icon.ico")
+            flip_func = [("Vertical","Vertical"),
+                            ("Horizontal","Horizontal")]
+            selected = StringVar()
+            selected.set("Vertical")
+            for text, selections in flip_func:
+                Radiobutton(E, text=text, variable=selected, value=selections).pack(anchor=W)
+            btn = Button(E, text="Enter", command=lambda:choose_function(img, selected.get())).pack()
+
+    def border(self, path):
+        def get_border(img):
+            num = e.get().split()
+            top, bottom, left, right = int(num[0]), int(num[1]), int(num[2]), int(num[3])
+            E.destroy()
+            img_f = cv2.copyMakeBorder(img, top,bottom,left,right, cv2.BORDER_CONSTANT,
+                                      value=(255,255,255))
+            img = self.cv2_to_PIL(img_f)
+            self.top_pop("Border", img, img_f)
+
+        img = cv2.imread(path)      
+        E = Toplevel()
+        E.title("Border set")
+        E.iconbitmap("icon.ico")
+        e = Entry(E, width=50)
+        e.insert(0, "Top Bottom Left Right (split with space)")
+        e.pack()
+        btn = Button(E, text="Enter", command=lambda:get_border(img)).pack()
+
+    def text(self, path):
+        def put_text(img):
+            txt = e.get()
+            E.destroy()
+            img_f = cv2.putText(img, str(txt), (10,30), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1, (0,0,0))
+            img = self.cv2_to_PIL(img_f)
+            self.top_pop("Text Image", img, img_f)
+
+        img = cv2.imread(path)      
+        E = Toplevel()
+        E.title("Text")
+        E.iconbitmap("icon.ico")
+        e = Entry(E, width=50)
+        e.insert(0, "Enter text:")
+        e.pack()
+        btn = Button(E, text="Enter", command=lambda:put_text(img)).pack()
