@@ -287,8 +287,7 @@ class image_functions():
             img_f = cv2.convertScaleAbs(img, alpha=int(alpha.get())/100, beta=int(beta.get()))
             img = self.cv2_to_PIL(img_f)
             self.top_pop("Brightness and Contrast", img, img_f)
-          
-            
+             
         E = Toplevel()
         E.title("Adjust panel")
         E.iconbitmap("icon.ico")
