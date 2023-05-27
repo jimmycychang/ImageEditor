@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from tkinter import *
 from tkinter import messagebox
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageEnhance
 from tkinter import filedialog
 
 class image_functions():
@@ -50,43 +50,51 @@ class image_functions():
                                                     ("png files", "*.png"), 
                                                     ("all files", "*.*")))
         Button(self.root, text="Select an Image", command=self.select_img).grid(
-            row=0, column=0, padx=2, pady=2, sticky=W, ipadx=17)
+            row=0, column=0, padx=2, pady=2, sticky=W, ipadx=19)
         
         Button(self.root, text="Show Original Image", command=lambda:self.show(path)).grid(
-            row=1, column=0, padx=2, pady=2, sticky=W)
+            row=1, column=0, padx=2, pady=2, sticky=W, ipadx=2)
         Button(self.root, text="Show Image Info", command=lambda:self.showinfo(path)).grid(
             row=1, column=1, padx=2, pady=2, sticky=W)
         Button(self.root, text="Resize Image", command=lambda:self.resize(path)).grid(
-            row=1, column=2, padx=2, pady=2, sticky=W, ipadx=1)
+            row=1, column=2, padx=2, pady=2, sticky=W, ipadx=6)
         Button(self.root, text="Crop Image", command=lambda:self.crop(path)).grid(
             row=1, column=3, padx=2, pady=2, sticky=W, ipadx=10)
         
         Button(self.root, text="Grayscale Image", command=lambda:self.gray(path)).grid(
-            row=2, column=0, padx=2, pady=2, sticky=W, ipadx=16)
+            row=2, column=0, padx=2, pady=2, sticky=W, ipadx=18)
         Button(self.root, text="Negative Image", command=lambda:self.negative(path)).grid(
             row=2, column=1, padx=2, pady=2, sticky=W, ipadx=4)
         Button(self.root, text="Blur Image", command=lambda:self.blur(path)).grid(
-            row=2, column=2, padx=2, pady=2, sticky=W, ipadx=9)
+            row=2, column=2, padx=2, pady=2, sticky=W, ipadx=14)
         Button(self.root, text="Smooth Image", command=lambda:self.smooth(path)).grid(
             row=2, column=3, padx=2, pady=2, sticky=W)
         
         Button(self.root, text="Red Image", command=lambda:self.red(path)).grid(
-            row=3, column=0, padx=2, pady=2, sticky=W, ipadx=35)
+            row=3, column=0, padx=2, pady=2, sticky=W, ipadx=37)
         Button(self.root, text="Green Image", command=lambda:self.green(path)).grid(
             row=3, column=1, padx=2, pady=2, sticky=W, ipadx=14)
         Button(self.root, text="Blue Image", command=lambda:self.blue(path)).grid(
-            row=3, column=2, padx=2, pady=2, sticky=W, ipadx=7)
+            row=3, column=2, padx=2, pady=2, sticky=W, ipadx=12)
         Button(self.root, text="Sketch Image", command=lambda:self.sketch(path)).grid(
             row=3, column=3, padx=2, pady=2, sticky=W, ipadx=4)
         
         Button(self.root, text="Rotate Image", command=lambda:self.rotate(path)).grid(
-            row=4, column=0, padx=2, pady=2, sticky=W, ipadx=26)
+            row=4, column=0, padx=2, pady=2, sticky=W, ipadx=28)
         Button(self.root, text="Flip Image", command=lambda:self.flip(path)).grid(
             row=4, column=1, padx=2, pady=2, sticky=W, ipadx=22)
         Button(self.root, text="Border Image", command=lambda:self.border(path)).grid(
-            row=4, column=2, padx=2, pady=2, sticky=W)
+            row=4, column=2, padx=2, pady=2, sticky=W, ipadx=5)
         Button(self.root, text="Text Image", command=lambda:self.text(path)).grid(
             row=4, column=3, padx=2, pady=2, sticky=W, ipadx=12)
+        
+        Button(self.root, text="Brightness & Contrast", command=lambda:self.bright_contrast(path)).grid(
+            row=5, column=0, padx=2, pady=2, sticky=W)
+        Button(self.root, text="Image Edge", command=lambda:self.edge(path)).grid(
+            row=5, column=1, padx=2, pady=2, sticky=W, ipadx=17)
+        Button(self.root, text="Sharpen Image", command=lambda:self.sharpen(path)).grid(
+            row=5, column=2, padx=2, pady=2, sticky=W)
+
         return path
 
     def show(self, path):
@@ -102,7 +110,6 @@ class image_functions():
 
     def resize(self, path):
         def get_shape(img):
-            global myImage
             num = e.get().split()
             x,y = int(num[0]), int(num[1])
             E.destroy()
@@ -210,27 +217,27 @@ class image_functions():
         btn = Button(E, text="Enter", command=lambda:choose_function(img, selected.get())).pack()
 
     def flip(self, path):
-            img = cv2.imread(path)
-            def choose_function(img, value):
-                if value == "Vertical":
-                    img_f = cv2.flip(img, 0)
-                    img = self.cv2_to_PIL(img_f)
-                    self.top_pop("Flip", img, img_f)
-                if value == "Horizontal":
-                    img_f = cv2.flip(img, 2)
-                    img = self.cv2_to_PIL(img_f)
-                    self.top_pop("Flip", img, img_f)
+        img = cv2.imread(path)
+        def choose_function(img, value):
+            if value == "Vertical":
+                img_f = cv2.flip(img, 0)
+                img = self.cv2_to_PIL(img_f)
+                self.top_pop("Flip", img, img_f)
+            if value == "Horizontal":
+                img_f = cv2.flip(img, 2)
+                img = self.cv2_to_PIL(img_f)
+                self.top_pop("Flip", img, img_f)
             
-            E = Toplevel()
-            E.title("Function")
-            E.iconbitmap("icon.ico")
-            flip_func = [("Vertical","Vertical"),
-                            ("Horizontal","Horizontal")]
-            selected = StringVar()
-            selected.set("Vertical")
-            for text, selections in flip_func:
-                Radiobutton(E, text=text, variable=selected, value=selections).pack(anchor=W)
-            btn = Button(E, text="Enter", command=lambda:choose_function(img, selected.get())).pack()
+        E = Toplevel()
+        E.title("Function")
+        E.iconbitmap("icon.ico")
+        flip_func = [("Vertical","Vertical"),
+                    ("Horizontal","Horizontal")]
+        selected = StringVar()
+        selected.set("Vertical")
+        for text, selections in flip_func:
+            Radiobutton(E, text=text, variable=selected, value=selections).pack(anchor=W)
+        btn = Button(E, text="Enter", command=lambda:choose_function(img, selected.get())).pack()
 
     def border(self, path):
         def get_border(img):
@@ -267,3 +274,36 @@ class image_functions():
         e.insert(0, "Enter text:")
         e.pack()
         btn = Button(E, text="Enter", command=lambda:put_text(img)).pack()
+
+    def edge(self, path):
+        img = cv2.imread(path)
+        img_f = cv2.Canny(img, 100, 200)
+        img = self.cv2_to_PIL(img_f)
+        self.top_pop("Edge", img, img_f)
+
+    def bright_contrast(self, path):
+        img = cv2.imread(path)
+        def bright_scale(img):
+            img_f = cv2.convertScaleAbs(img, alpha=int(alpha.get())/100, beta=int(beta.get()))
+            img = self.cv2_to_PIL(img_f)
+            self.top_pop("Brightness and Contrast", img, img_f)
+          
+            
+        E = Toplevel()
+        E.title("Adjust panel")
+        E.iconbitmap("icon.ico")
+
+        alpha = Scale(E, from_=-100, to=300, orient=HORIZONTAL, length=150, label="Alpha")
+        alpha.pack()
+        beta = Scale(E, from_=0, to=255, orient=HORIZONTAL, length=150, label="Beta")
+        beta.pack()
+        btn = Button(E, text="Enter", command=lambda:bright_scale(img)).pack()
+
+    def sharpen(self, path):
+        img = cv2.imread(path)
+        kernal = np.array([[0,-1,0],
+                           [-1,5,-1],
+                           [0,-1,0]])
+        img_f = cv2.filter2D(img, -1, kernal)
+        img = self.cv2_to_PIL(img_f)
+        self.top_pop("Sharpen", img, img_f)
